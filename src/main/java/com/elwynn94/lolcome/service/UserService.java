@@ -105,7 +105,9 @@ public class UserService {
                 user.getUserId(),
                 user.getName(),
                 user.getIntroduction(),
-                user.getEmail()
+                user.getEmail(),
+                user.getPostLikes(),
+                user.getCommentLikes()
         );
     }
 

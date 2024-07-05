@@ -45,9 +45,8 @@ public class UserController {
         this.passwordEncoder=passwordEncoder;
     }
 
-
     // 공통 응답 처리 Generic 메서드
-    private <T> ResponseEntity<HttpStatusResponseDto> createResponse(ResponseCode responseCode) {
+    private ResponseEntity<HttpStatusResponseDto> createResponse(ResponseCode responseCode) {
         HttpStatusResponseDto response = new HttpStatusResponseDto(responseCode);
         return new ResponseEntity<>(response, HttpStatus.valueOf(responseCode.getStatusCode()));
     }
