@@ -40,7 +40,10 @@ public class PostLikeService {
             return new HttpStatusResponseDto(ResponseCode.DO_NOT_LIKE_MY_POST);
         }
 
-        postLikeRepository.save(new PostLike(new PostLikeId(userId, postId) ,user, post));
+
+        // 예외 처리 후 좋아요 저장
+        postLikeRepository.save(new PostLike(new PostLikeId(userId, postId), user, post));
+
         return new HttpStatusResponseDto(ResponseCode.SUCCESS);
     }
 

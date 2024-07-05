@@ -59,7 +59,7 @@ public class CommentController {
     @PatchMapping("/comment/{commentId}")
     public ResponseEntity<HttpResponseDto> updateComment(@PathVariable Long commentId,
                                                          @RequestBody CommentUpdateRequestDto requestDto) {
-        commentService.updateComment(commentId, requestDto, null);
+        commentService.updateComment(commentId, requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 HttpResponseDto.builder()
@@ -78,4 +78,6 @@ public class CommentController {
                         .build()
         );
     }
+
+
 }

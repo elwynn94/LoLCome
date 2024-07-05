@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 public class PostLikeId implements Serializable {

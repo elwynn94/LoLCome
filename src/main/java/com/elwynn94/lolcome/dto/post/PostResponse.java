@@ -8,21 +8,14 @@ import lombok.Getter;
 @Getter
 public class PostResponse {
 
-    private Long postId;
-
-    private String summonerName;
-
-    private String content;
-
-    private String mainPosition;
-
-    private String tier;
-
-    private String hopeChampion;
-
-    private String winRate;
-
-    private String kda;
+    private final Long postId;
+    private final String summonerName;
+    private final String content;
+    private final String mainPosition;
+    private final String tier;
+    private final String hopeChampion;
+    private final String winRate;
+    private final String kda;
 
 //    public PostResponse(Post post) {
 //        this.postId = post.getPostId();

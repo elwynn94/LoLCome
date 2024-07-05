@@ -24,6 +24,7 @@ import java.util.Map;
 @Component
 @Slf4j(topic = "로그인 및 JWT 생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
 
@@ -57,8 +58,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             }
 
             // 사용자 상태가 VERIFIED인 경우 인증 진행
-            return getAuthenticationManager().authenticate( //사용자인증
-                    new UsernamePasswordAuthenticationToken( //사용자인증정보저장
+            return getAuthenticationManager().authenticate( // 사용자 인증
+                    new UsernamePasswordAuthenticationToken( // 사용자 인증 정보 저장
                             requestDto.getUserId(),
                             requestDto.getPassword(),
                             null
@@ -91,7 +92,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
-    //사용자 인증에 실패했을때
+    // 사용자 인증에 실패했을때
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException{
         log.info("JwtAuthenticationFilter: Authentication failed!");
@@ -99,7 +100,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("msg", "로그인 실패");
-        responseBody.put("statuscode", "401");
+        responseBody.put("status-code", "401");
 
         ObjectMapper objectMapper = new ObjectMapper();
         String responseJson = objectMapper.writeValueAsString(responseBody);

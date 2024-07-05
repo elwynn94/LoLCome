@@ -41,14 +41,8 @@ public class Post extends Timestamped {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
-
-//    public Post(String title, String content, User user) {
-//        this.title = title;
-//        this.content = content;
-//        this.user = user;
-//    }
 
     public Post(Long postId, String summonerName, String content, String mainPosition, String tier,
                 String hopeChampion, String winRate, String kda, User user) {

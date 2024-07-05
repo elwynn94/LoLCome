@@ -11,6 +11,8 @@ import com.elwynn94.lolcome.repository.CommentRepository;
 import com.elwynn94.lolcome.repository.PostRepository;
 import com.elwynn94.lolcome.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +26,7 @@ public class CommentLikeService {
 
     // 댓글 좋아요 등록
     public HttpStatusResponseDto doLike(Long postId, Long commentId, Long userId) {
-        if (!checkInputs(postId, commentId, userId)) {
+        if (checkInputs(postId, commentId, userId)) {
             return new HttpStatusResponseDto(ResponseCode.INVALID_INPUT_VALUE);
         }
 
@@ -35,6 +37,7 @@ public class CommentLikeService {
 
         // 예외 2) 자신의 댓글에 좋아요한 경우
         Comment comment = commentRepository.findById(commentId).orElse(null);
+        assert comment != null;
         if (userId.equals(comment.getUser().getId())) {
             return new HttpStatusResponseDto(ResponseCode.DO_NOT_LIKE_MY_COMMENT);
         }
@@ -46,7 +49,7 @@ public class CommentLikeService {
 
     // 댓글 좋아요 취소 (삭제)
     public HttpStatusResponseDto undoLike(Long postId, Long commentId, Long userId) {
-        if (!checkInputs(postId, commentId, userId)) {
+        if (checkInputs(postId, commentId, userId)) {
             return new HttpStatusResponseDto(ResponseCode.INVALID_INPUT_VALUE);
         }
 
@@ -60,11 +63,17 @@ public class CommentLikeService {
         return new HttpStatusResponseDto(ResponseCode.SUCCESS);
     }
 
+
+    // 좋아요한 댓글 조회
+    public Page<Comment> getLikedComments(Long userId, Pageable pageable) {
+        return commentLikeRepository.findLikedCommentsByUserId(userId, pageable);
+    }
+
     private boolean checkInputs(Long postId, Long commentId, Long userId) {
         // postId, commentId, userId가 유효한지 확인 (등록되어있는 postId, commentId, userId인지 확인)
         if (postRepository.existsById(postId) && commentRepository.existsById(commentId) && userRepository.existsById(userId)) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }

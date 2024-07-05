@@ -2,6 +2,7 @@ package com.elwynn94.lolcome.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -81,14 +82,27 @@ public class JwtUtil {
         return null;
     }
 
-    // JWT 토큰에서 userId 추출-post에서사용
+    // JWT 토큰에서 userId 추출 - post에서 사용
     public String getUserIdFromJwt(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(key)
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
 
-        return claims.getSubject();
+            String userId = claims.getSubject();
+            if (userId == null || userId.isEmpty()) {
+                throw new IllegalArgumentException("JWT token does not contain a valid user ID");
+            }
+
+            return userId;
+
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException |
+                 SignatureException |
+                 IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // 토큰 검증
@@ -96,12 +110,8 @@ public class JwtUtil {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (SecurityException | MalformedJwtException | SignatureException e) {
+        } catch (JwtException e) {
             log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
-        } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token, 만료된 JWT token 입니다.");
-        } catch (UnsupportedJwtException e) {
-            log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
         } catch (IllegalArgumentException e) {
             log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }

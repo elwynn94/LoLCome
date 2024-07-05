@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PostService {
 
-    @Autowired
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
@@ -38,7 +38,9 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public HttpStatusResponseDto getAllPosts(int page, int size) {
+    @NonNull
+    public HttpStatusResponseDto getAllPosts(int page) {
+        int size = 5;
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> postsPage = postRepository.findAll(pageable);
         List<PostResponse> posts = postsPage.stream().map(PostResponse::new).toList();
@@ -91,7 +93,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public HttpStatusResponseDto getPostsOfFollowees(String token, String userId) {
+    public HttpStatusResponseDto getPostsOfFollowers(String token, String userId) {
         if (!isValidUser(token, userId)) {
             return new HttpStatusResponseDto(ResponseCode.UNAUTHORIZED);
         }

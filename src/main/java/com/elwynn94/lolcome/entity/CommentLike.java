@@ -11,19 +11,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "comment_like")
+@Table(name = "COMMENT_LIKE")
 public class CommentLike extends Timestamped {
     @EmbeddedId
     private CommentLikeId id;
 
-    // Fetch Type 고민좀 해보기!! EAGER / LAZY
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @MapsId("commentId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id", nullable = false)
+    @JoinColumn(name = "COMMENT_ID", nullable = false)
     private Comment comment;
+
 }

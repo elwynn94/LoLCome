@@ -24,6 +24,10 @@ public class EmailVerificationController {
     // 이메일 인증 코드를 전송
     @PostMapping("/send")
     public ResponseEntity<HttpStatusResponseDto> sendVerificationCode(@RequestParam String email) {
+        return getHttpStatusResponseDtoResponseEntity(email);
+    }
+
+    private ResponseEntity<HttpStatusResponseDto> getHttpStatusResponseDtoResponseEntity(@RequestParam String email) {
         try {
             emailVerificationService.createVerificationCode(email);
             HttpStatusResponseDto response = new HttpStatusResponseDto(ResponseCode.SUCCESS);
@@ -50,13 +54,6 @@ public class EmailVerificationController {
     // 이메일 인증 코드를 재발송
     @PostMapping("/resend")
     public ResponseEntity<HttpStatusResponseDto> resendVerificationCode(@RequestParam String email) {
-        try {
-            emailVerificationService.createVerificationCode(email);
-            HttpStatusResponseDto response = new HttpStatusResponseDto(ResponseCode.SUCCESS);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            HttpStatusResponseDto response = new HttpStatusResponseDto(ResponseCode.INVALID_INPUT_VALUE);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
+        return getHttpStatusResponseDtoResponseEntity(email);
     }
 }

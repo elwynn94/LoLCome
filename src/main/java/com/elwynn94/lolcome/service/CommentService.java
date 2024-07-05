@@ -8,12 +8,9 @@ import com.elwynn94.lolcome.entity.Post;
 import com.elwynn94.lolcome.entity.User;
 import com.elwynn94.lolcome.repository.CommentRepository;
 import com.elwynn94.lolcome.repository.PostRepository;
-import com.elwynn94.lolcome.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +21,6 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
 
     public void createComment(Long postId, CommentCreateRequestDto requestDto, User user) {
         Post post = postRepository.findById(postId)
@@ -40,7 +36,7 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public void updateComment(Long commentId, CommentUpdateRequestDto requestDto, User user) {
+    public void updateComment(Long commentId, CommentUpdateRequestDto requestDto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid comment ID"));
         comment.setContent(requestDto.getContent());

@@ -33,17 +33,15 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public HttpStatusResponseDto getAllPosts(
-            @RequestParam int page,
-            @RequestParam int size) {
-        return postService.getAllPosts(page, size);
+    public HttpStatusResponseDto getAllPosts(@RequestParam int page) {
+        return postService.getAllPosts(page);
     }
 
     @GetMapping("/{userId}/following/posts")
     public HttpStatusResponseDto getPostsOfFollowees(@PathVariable String userId,
                                                      HttpServletRequest request) {
         String token = jwtUtil.getAccessTokenFromHeader(request);
-        return postService.getPostsOfFollowees(token, userId);
+        return postService.getPostsOfFollowers(token, userId);
     }
 
     @GetMapping("/{userId}/posts")

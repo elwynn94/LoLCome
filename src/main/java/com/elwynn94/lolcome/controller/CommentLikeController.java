@@ -1,9 +1,12 @@
 package com.elwynn94.lolcome.controller;
 
 import com.elwynn94.lolcome.dto.HttpStatusResponseDto;
+import com.elwynn94.lolcome.entity.Comment;
 import com.elwynn94.lolcome.security.UserDetailsImpl;
 import com.elwynn94.lolcome.service.CommentLikeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,5 +25,10 @@ public class CommentLikeController {
     @DeleteMapping("/{postId}/comment/{commentId}/like")
     public HttpStatusResponseDto undoLike(@PathVariable Long postId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentLikeService.undoLike(postId, commentId, userDetails.getUser().getId());
+    }
+
+    @GetMapping("/comment/liked")
+    public Page<Comment> getLikedComments(@RequestParam Long userId, Pageable pageable) {
+        return commentLikeService.getLikedComments(userId, pageable);
     }
 }

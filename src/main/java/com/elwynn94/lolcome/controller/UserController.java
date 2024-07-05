@@ -2,7 +2,7 @@ package com.elwynn94.lolcome.controller;
 
 import com.elwynn94.lolcome.config.ResponseCode;
 import com.elwynn94.lolcome.dto.HttpStatusResponseDto;
-import com.elwynn94.lolcome.dto.SignupRequestDto;
+import com.elwynn94.lolcome.dto.user.SignupRequestDto;
 import com.elwynn94.lolcome.dto.WithdrawRequestDto;
 import com.elwynn94.lolcome.dto.user.UpdatePasswordRequestDto;
 import com.elwynn94.lolcome.dto.user.UpdateProfileRequestDto;
@@ -25,7 +25,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.stream.Collectors;
 

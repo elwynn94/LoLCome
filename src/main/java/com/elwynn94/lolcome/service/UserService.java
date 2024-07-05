@@ -1,7 +1,7 @@
 package com.elwynn94.lolcome.service;
 
 import com.elwynn94.lolcome.config.ResponseCode;
-import com.elwynn94.lolcome.dto.SignupRequestDto;
+import com.elwynn94.lolcome.dto.user.SignupRequestDto;
 import com.elwynn94.lolcome.dto.user.UpdatePasswordRequestDto;
 import com.elwynn94.lolcome.dto.user.UpdateProfileRequestDto;
 import com.elwynn94.lolcome.dto.user.UserInquiryResponseDto;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserService {
@@ -29,9 +28,9 @@ public class UserService {
     // 회원가입
     @Transactional
     public ResponseCode signup(SignupRequestDto requestDto) {
-        String userId = requestDto.getUserId();
-        String password = requestDto.getPassword();
-        String email = requestDto.getEmail();
+        String userId = requestDto.userId();
+        String password = requestDto.password();
+        String email = requestDto.email();
 
         // 중복된 사용자 확인
         if (userRepository.existsByUserId(userId)) {
@@ -82,15 +81,15 @@ public class UserService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        if (!passwordEncoder.matches(requestDto.getCurrentPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(requestDto.currentPassword(), user.getPassword())) {
             return ResponseCode.UNAUTHORIZED;
         }
 
-        if (passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())) {
+        if (passwordEncoder.matches(requestDto.newPassword(), user.getPassword())) {
             return ResponseCode.INVALID_INPUT_VALUE;
         }
 
-        user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+        user.setPassword(passwordEncoder.encode(requestDto.newPassword()));
         userRepository.save(user);
 
         return ResponseCode.SUCCESS;

@@ -9,11 +9,6 @@ public class FollowId implements Serializable {
 
     public FollowId() {}
 
-    public FollowId(Long followerId, Long followedId) {
-        this.followerId = followerId;
-        this.followedId = followedId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
