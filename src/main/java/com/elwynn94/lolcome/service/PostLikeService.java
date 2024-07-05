@@ -10,7 +10,10 @@ import com.elwynn94.lolcome.repository.PostLikeRepository;
 import com.elwynn94.lolcome.repository.PostRepository;
 import com.elwynn94.lolcome.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,4 +66,11 @@ public class PostLikeService {
         postLikeRepository.delete(postLike);
         return new HttpStatusResponseDto(ResponseCode.SUCCESS);
     }
+
+    // 좋아요한 게시물 조회
+    @Transactional(readOnly = true)
+    public Page<Post> getLikedPosts(Long userId, Pageable pageable) {
+        return postLikeRepository.findLikedPostsByUserId(userId, pageable);
+    }
+
 }
