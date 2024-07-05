@@ -9,9 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "post_like")
 public class PostLike extends Timestamped {
+
     @EmbeddedId
     private PostLikeId id;
 
@@ -25,4 +27,5 @@ public class PostLike extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+
 }
