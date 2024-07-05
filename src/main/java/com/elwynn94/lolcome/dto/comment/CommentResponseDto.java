@@ -11,11 +11,13 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
 
     private String content;
+    private int likeCount;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     public CommentResponseDto(Comment comment) {
         this.content = comment.getContent();
+        this.likeCount = comment.getLikeCount();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
     }

@@ -44,6 +44,13 @@ public class Post extends Timestamped {
     @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> likes;
+
+    public int getLikeCount() {
+        return likes.size();
+    }
+
     public Post(Long postId, String summonerName, String content, String mainPosition, String tier,
                 String hopeChampion, String winRate, String kda, User user) {
         this.postId = postId;

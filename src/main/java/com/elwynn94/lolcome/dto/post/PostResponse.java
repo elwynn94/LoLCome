@@ -16,6 +16,7 @@ public class PostResponse {
     private final String hopeChampion;
     private final String winRate;
     private final String kda;
+    private int likeCount;
 
 //    public PostResponse(Post post) {
 //        this.postId = post.getPostId();
@@ -33,5 +34,6 @@ public class PostResponse {
         this.hopeChampion = getHopeChampion();
         this.winRate = getWinRate();
         this.kda = getKda();
+        this.likeCount = post.getLikeCount();
     }
 }

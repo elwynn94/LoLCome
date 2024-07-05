@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,6 +28,13 @@ public class Comment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "comment")
+    private List<CommentLike> likes;
+
+    public int getLikeCount() {
+        return likes.size();
+    }
 
     public Comment(String content, Post post, User user) {
         this.content = content;
